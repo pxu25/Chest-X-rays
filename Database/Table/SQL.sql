@@ -1,7 +1,10 @@
+/*create a user with 'password' as passwor*/
 $mysql -u root -p
 CREATE OR REPLACE USER user@localhost IDENTIFIED BY 'password';
 GRANT ALL privileges ON `X-rays`.* TO 'user'@localhost;
 $quit;
+
+/*test if the user account works*/
 $mysql -u user -p
 USE X-rays;
 SHOW tables;
