@@ -1,0 +1,327 @@
+
+https://mariadb.com/resources/blog/installing-mariadb-10-1-16-on-mac-os-x-with-homebrew/
+
+Installing MariaDB 10.1.16 on Mac OS X with Homebrew
+Posted on August 18, 2016 by Ben Stillman
+
+
+Developing on your Mac? Get the latest stable MariaDB version set up on OS X easily with Homebrew. See this step by step guide on installing MariaDB 10.1.16.
+
+1 INSTALL XCODE
+xcode-select –install
+
+bens-mbp:~ ben$ xcode-select --install
+xcode-select: note: install requested for command line developer tools
+2 INSTALL HOMEBREW
+ruby -e “$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)”
+
+Bens-MacBook-Pro:~ ben$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+==> This script will install:
+/usr/local/bin/brew
+/usr/local/Library/...
+/usr/local/share/doc/homebrew
+/usr/local/share/man/man1/brew.1
+/usr/local/share/zsh/site-functions/_brew
+/usr/local/etc/bash_completion.d/brew
+
+Press RETURN to continue or any other key to abort
+==> /usr/bin/sudo /bin/mkdir -p /Users/ben/Library/Caches/Homebrew
+Password:
+==> /usr/bin/sudo /bin/chmod g+rwx /Users/ben/Library/Caches/Homebrew
+==> /usr/bin/sudo /usr/sbin/chown ben /Users/ben/Library/Caches/Homebrew
+==> Downloading and installing Homebrew...
+remote: Counting objects: 537, done.
+remote: Compressing objects: 100% (478/478), done.
+remote: Total 537 (delta 31), reused 341 (delta 28), pack-reused 0
+Receiving objects: 100% (537/537), 817.70 KiB | 1.25 MiB/s, done.
+Resolving deltas: 100% (31/31), done.
+From https://github.com/Homebrew/brew
+ * [new branch]      master     -> origin/master
+HEAD is now at 984ed83 doctor: print check on --debug.
+==> Tapping homebrew/core
+Cloning into '/usr/local/Library/Taps/homebrew/homebrew-core'...
+remote: Counting objects: 3716, done.
+remote: Compressing objects: 100% (3603/3603), done.
+remote: Total 3716 (delta 15), reused 1863 (delta 4), pack-reused 0
+Receiving objects: 100% (3716/3716), 2.88 MiB | 3.74 MiB/s, done.
+Resolving deltas: 100% (15/15), done.
+Checking connectivity... done.
+Tapped 3594 formulae (3,743 files, 8.9M)
+==> Installation successful!
+==> Next steps
+Run `brew help` to get started
+Further documentation: https://git.io/brew-docs
+==> Homebrew has enabled anonymous aggregate user behaviour analytics
+Read the analytics documentation (and how to opt-out) here:
+  https://git.io/brew-analytics
+3 CHECK HOMEBREW
+brew doctor
+
+bens-mbp:~ ben$ brew doctor
+Your system is ready to brew.
+4 UPDATE HOMEBREW
+brew update
+
+bens-mbp:~ ben$ brew update
+Already up-to-date.
+5 VERIFY MARIADB VERSION IN HOMEBREW REPO
+brew info mariadb
+
+Bens-MacBook-Pro:~ ben$ brew info mariadb
+mariadb: stable 10.1.16 (bottled), devel 10.2.1
+Drop-in replacement for MySQL
+https://mariadb.org/
+Conflicts with: mariadb-connector-c, mysql, mysql-cluster, mysql-connector-c, mytop, percona-server
+Not installed
+From: https://github.com/Homebrew/homebrew-core/blob/master/Formula/mariadb.rb
+==> Dependencies
+Build: cmake ✘
+Required: openssl ✘
+==> Options
+--universal
+    Build a universal binary
+--with-archive-storage-engine
+    Compile with the ARCHIVE storage engine enabled
+--with-bench
+    Keep benchmark app when installing
+--with-blackhole-storage-engine
+    Compile with the BLACKHOLE storage engine enabled
+--with-embedded
+    Build the embedded server
+--with-libedit
+    Compile with editline wrapper instead of readline
+--with-local-infile
+    Build with local infile loading support
+--with-test
+    Keep test when installing
+--devel
+    Install development version 10.2.1
+==> Caveats
+A "/etc/my.cnf" from another install may interfere with a Homebrew-built
+server starting up correctly.
+
+To connect:
+    mysql -uroot
+
+To have launchd start mariadb now and restart at login:
+  brew services start mariadb
+Or, if you don't want/need a background service you can just run:
+  mysql.server start
+6 INSTALL MARIADB
+brew install mariadb
+
+Bens-MacBook-Pro:~ ben$ brew install mariadb
+==> Installing dependencies for mariadb: openssl
+==> Installing mariadb dependency: openssl
+==> Downloading https://homebrew.bintray.com/bottles/openssl-1.0.2h_1.el_capitan.bottle.tar.gz
+######################################################################## 100.0%
+==> Pouring openssl-1.0.2h_1.el_capitan.bottle.tar.gz
+==> Caveats
+A CA file has been bootstrapped using certificates from the system
+keychain. To add additional certificates, place .pem files in
+  /usr/local/etc/openssl/certs
+
+and run
+  /usr/local/opt/openssl/bin/c_rehash
+
+This formula is keg-only, which means it was not symlinked into /usr/local.
+
+Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries
+
+Generally there are no consequences of this for you. If you build your
+own software and it requires this formula, you'll need to add to your
+build variables:
+
+    LDFLAGS:  -L/usr/local/opt/openssl/lib
+    CPPFLAGS: -I/usr/local/opt/openssl/include
+
+==> Summary
+  /usr/local/Cellar/openssl/1.0.2h_1: 1,691 files, 12M
+==> Installing mariadb
+==> Downloading https://homebrew.bintray.com/bottles/mariadb-10.1.16.el_capitan.bottle.tar.gz
+######################################################################## 100.0%
+==> Pouring mariadb-10.1.16.el_capitan.bottle.tar.gz
+==> /usr/local/Cellar/mariadb/10.1.16/bin/mysql_install_db --verbose --user=ben --basedir=/usr/local/Cellar/mariadb/10.1.16 --datadir=/usr/local/var/mysql --tmpdir=/tmp
+==> Caveats
+A "/etc/my.cnf" from another install may interfere with a Homebrew-built
+server starting up correctly.
+
+To connect:
+    mysql -uroot
+
+To have launchd start mariadb now and restart at login:
+  brew services start mariadb
+Or, if you don't want/need a background service you can just run:
+  mysql.server start
+==> Summary
+  /usr/local/Cellar/mariadb/10.1.16: 573 files, 137.1M
+7 RUN THE DATABASE INSTALLER
+mysql_install_db
+
+Bens-MacBook-Pro:10.1.16 ben$ mysql_install_db
+Installing MariaDB/MySQL system tables in '/usr/local/var/mysql' ...
+2016-08-16 19:15:02 140735320776704 [Note] /usr/local/Cellar/mariadb/10.1.16/bin/mysqld (mysqld 10.1.16-MariaDB) starting as process 83824 ...
+2016-08-16 19:15:02 140735320776704 [Note] InnoDB: Using mutexes to ref count buffer pool pages
+2016-08-16 19:15:02 140735320776704 [Note] InnoDB: The InnoDB memory heap is disabled
+2016-08-16 19:15:02 140735320776704 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+2016-08-16 19:15:02 140735320776704 [Note] InnoDB: Memory barrier is not used
+2016-08-16 19:15:02 140735320776704 [Note] InnoDB: Compressed tables use zlib 1.2.5
+2016-08-16 19:15:02 140735320776704 [Note] InnoDB: Using SSE crc32 instructions
+2016-08-16 19:15:02 140735320776704 [Note] InnoDB: Initializing buffer pool, size = 128.0M
+2016-08-16 19:15:02 140735320776704 [Note] InnoDB: Completed initialization of buffer pool
+2016-08-16 19:15:02 140735320776704 [Note] InnoDB: Highest supported file format is Barracuda.
+2016-08-16 19:15:02 140735320776704 [Note] InnoDB: 128 rollback segment(s) are active.
+2016-08-16 19:15:02 140735320776704 [Note] InnoDB: Waiting for purge to start
+2016-08-16 19:15:02 140735320776704 [Note] InnoDB:  Percona XtraDB (http://www.percona.com) 5.6.30-76.3 started; log sequence number 1616819
+2016-08-16 19:15:02 123145313034240 [Note] InnoDB: Dumping buffer pool(s) not yet started
+OK
+Filling help tables...
+2016-08-16 19:15:04 140735320776704 [Note] /usr/local/Cellar/mariadb/10.1.16/bin/mysqld (mysqld 10.1.16-MariaDB) starting as process 83828 ...
+2016-08-16 19:15:04 140735320776704 [Note] InnoDB: Using mutexes to ref count buffer pool pages
+2016-08-16 19:15:04 140735320776704 [Note] InnoDB: The InnoDB memory heap is disabled
+2016-08-16 19:15:04 140735320776704 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+2016-08-16 19:15:04 140735320776704 [Note] InnoDB: Memory barrier is not used
+2016-08-16 19:15:04 140735320776704 [Note] InnoDB: Compressed tables use zlib 1.2.5
+2016-08-16 19:15:04 140735320776704 [Note] InnoDB: Using SSE crc32 instructions
+2016-08-16 19:15:04 140735320776704 [Note] InnoDB: Initializing buffer pool, size = 128.0M
+2016-08-16 19:15:04 140735320776704 [Note] InnoDB: Completed initialization of buffer pool
+2016-08-16 19:15:04 140735320776704 [Note] InnoDB: Highest supported file format is Barracuda.
+2016-08-16 19:15:04 140735320776704 [Note] InnoDB: 128 rollback segment(s) are active.
+2016-08-16 19:15:04 140735320776704 [Note] InnoDB: Waiting for purge to start
+2016-08-16 19:15:04 140735320776704 [Note] InnoDB:  Percona XtraDB (http://www.percona.com) 5.6.30-76.3 started; log sequence number 1616829
+2016-08-16 19:15:04 123145313034240 [Note] InnoDB: Dumping buffer pool(s) not yet started
+OK
+Creating OpenGIS required SP-s...
+2016-08-16 19:15:07 140735320776704 [Note] /usr/local/Cellar/mariadb/10.1.16/bin/mysqld (mysqld 10.1.16-MariaDB) starting as process 83833 ...
+2016-08-16 19:15:07 140735320776704 [Note] InnoDB: Using mutexes to ref count buffer pool pages
+2016-08-16 19:15:07 140735320776704 [Note] InnoDB: The InnoDB memory heap is disabled
+2016-08-16 19:15:07 140735320776704 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+2016-08-16 19:15:07 140735320776704 [Note] InnoDB: Memory barrier is not used
+2016-08-16 19:15:07 140735320776704 [Note] InnoDB: Compressed tables use zlib 1.2.5
+2016-08-16 19:15:07 140735320776704 [Note] InnoDB: Using SSE crc32 instructions
+2016-08-16 19:15:07 140735320776704 [Note] InnoDB: Initializing buffer pool, size = 128.0M
+2016-08-16 19:15:07 140735320776704 [Note] InnoDB: Completed initialization of buffer pool
+2016-08-16 19:15:07 140735320776704 [Note] InnoDB: Highest supported file format is Barracuda.
+2016-08-16 19:15:07 140735320776704 [Note] InnoDB: 128 rollback segment(s) are active.
+2016-08-16 19:15:07 140735320776704 [Note] InnoDB: Waiting for purge to start
+2016-08-16 19:15:07 140735320776704 [Note] InnoDB:  Percona XtraDB (http://www.percona.com) 5.6.30-76.3 started; log sequence number 1616839
+2016-08-16 19:15:07 123145313034240 [Note] InnoDB: Dumping buffer pool(s) not yet started
+OK
+
+To start mysqld at boot time you have to copy
+support-files/mysql.server to the right place for your system
+
+PLEASE REMEMBER TO SET A PASSWORD FOR THE MariaDB root USER !
+To do so, start the server, then issue the following commands:
+
+'/usr/local/Cellar/mariadb/10.1.16/bin/mysqladmin' -u root password 'new-password'
+'/usr/local/Cellar/mariadb/10.1.16/bin/mysqladmin' -u root -h Bens-MacBook-Pro.local password 'new-password'
+
+Alternatively you can run:
+'/usr/local/Cellar/mariadb/10.1.16/bin/mysql_secure_installation'
+
+which will also give you the option of removing the test
+databases and anonymous user created by default.  This is
+strongly recommended for production servers.
+
+See the MariaDB Knowledgebase at http://mariadb.com/kb or the
+MySQL manual for more instructions.
+
+You can start the MariaDB daemon with:
+cd '/usr/local/Cellar/mariadb/10.1.16' ; /usr/local/Cellar/mariadb/10.1.16/bin/mysqld_safe --datadir='/usr/local/var/mysql'
+
+You can test the MariaDB daemon with mysql-test-run.pl
+cd '/usr/local/Cellar/mariadb/10.1.16/mysql-test' ; perl mysql-test-run.pl
+
+Please report any problems at http://mariadb.org/jira
+
+The latest information about MariaDB is available at http://mariadb.org/.
+You can find additional information about the MySQL part at:
+http://dev.mysql.com
+Support MariaDB development by buying support/new features from MariaDB
+Corporation Ab. You can contact us about this at sales@mariadb.com.
+Alternatively consider joining our community based development effort:
+http://mariadb.com/kb/en/contributing-to-the-mariadb-project/
+8 START MARIADB
+mysql.server start
+
+Bens-MacBook-Pro:10.1.16 ben$ mysql.server start
+Starting MySQL
+. SUCCESS!
+9 SECURE THE INSTALLATION
+mysql_secure_installation
+
+Bens-MacBook-Pro:10.1.16 ben$ mysql_secure_installation
+
+NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
+      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
+
+In order to log into MariaDB to secure it, we'll need the current
+password for the root user.  If you've just installed MariaDB, and
+you haven't set the root password yet, the password will be blank,
+so you should just press enter here.
+
+Enter current password for root (enter for none):
+OK, successfully used password, moving on...
+
+Setting the root password ensures that nobody can log into the MariaDB
+root user without the proper authorisation.
+
+Set root password? [Y/n]
+New password:
+Re-enter new password:
+Password updated successfully!
+Reloading privilege tables..
+ ... Success!
+
+
+By default, a MariaDB installation has an anonymous user, allowing anyone
+to log into MariaDB without having to have a user account created for
+them.  This is intended only for testing, and to make the installation
+go a bit smoother.  You should remove them before moving into a
+production environment.
+
+Remove anonymous users? [Y/n]
+ ... Success!
+
+Normally, root should only be allowed to connect from 'localhost'.  This
+ensures that someone cannot guess at the root password from the network.
+
+Disallow root login remotely? [Y/n]
+ ... Success!
+
+By default, MariaDB comes with a database named 'test' that anyone can
+access.  This is also intended only for testing, and should be removed
+before moving into a production environment.
+
+Remove test database and access to it? [Y/n]
+ - Dropping test database...
+ ... Success!
+ - Removing privileges on test database...
+ ... Success!
+
+Reloading the privilege tables will ensure that all changes made so far
+will take effect immediately.
+
+Reload privilege tables now? [Y/n]
+ ... Success!
+
+Cleaning up...
+
+All done!  If you've completed all of the above steps, your MariaDB
+installation should now be secure.
+
+Thanks for using MariaDB!
+10 CONNECT TO MARIADB
+mysql -u root -p
+
+Bens-MacBook-Pro:10.1.16 ben$ mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or g.
+Your MariaDB connection id is 11
+Server version: 10.1.16-MariaDB Homebrew
+
+Copyright (c) 2000, 2016, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or 'h' for help. Type 'c' to clear the current input statement.
+Tags: guide, Homebrew, How to, install, Installation, Mac, Mac OS X, MariaDB 10.1.16, Xcode
